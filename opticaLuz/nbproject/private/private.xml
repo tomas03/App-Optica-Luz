@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/RavenTom/Documents/NetBeansProjects/opticaLuz/src/view/borrarpaciente.java</file>
-            <file>file:/C:/Users/RavenTom/Documents/NetBeansProjects/opticaLuz/src/view/pacientes.java</file>
-            <file>file:/C:/Users/RavenTom/Documents/NetBeansProjects/opticaLuz/src/view/login.java</file>
-            <file>file:/C:/Users/RavenTom/Documents/NetBeansProjects/opticaLuz/src/view/editarpaciente.java</file>
-            <file>file:/C:/Users/RavenTom/Documents/NetBeansProjects/opticaLuz/src/view/crearpaciente.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/Model/Conexion.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/view/Crearcliente.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/view/Login.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/Model/Cliente.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/Model/DAO/ClienteDAO.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/view/Clientes.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/view/Observaciones.java</file>
+            <file>file:/D:/repositorios/App-Optica-Luz/opticaLuz/src/Model/Observ.java</file>
         </group>
     </open-files>
 </project-private>
