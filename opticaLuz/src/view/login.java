@@ -27,7 +27,7 @@ public class Login extends javax.swing.JFrame {
             user.setText("");
             pass.setText("");
         }
-        else if (!lg.getContraseña().equals(pass)) {
+        else if (!lg.getContraseña().equals(Pass)) {
             Error.setText("Contraseña Incorrecta");
             pass.setText("");
         }else{
