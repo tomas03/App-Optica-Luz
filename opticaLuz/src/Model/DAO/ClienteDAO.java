@@ -4,9 +4,9 @@
  */
 package Model.DAO;
 
+import Model.Observacion;
 import Model.Cliente;
 import Model.Conexion;
-import Model.Observ;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,7 +45,6 @@ public class ClienteDAO {
             }catch(SQLException e){
                 System.out.println(e.toString());
             }
-
         }
     }
     
@@ -90,24 +89,50 @@ public class ClienteDAO {
         }
     }
     
-    public List ListOBS(){
-        List<Observ> listob = new ArrayList();
-        String sql = "SELECT * FROM observaciones";
+    public boolean RegOBS (Observacion obs){
+        String sql = "INSERT INTO observaciones(observaciones,dnipaciente,fecha) values (?,?,?)";
         try{
-            con = cn.getConnection();
+            con =cn.getConnection();
             ps = con.prepareStatement(sql);
-            rs = ps.executeQuery(); 
-            while(rs.next()){
-               Observ obs = new Observ();
-               obs.setObs(rs.getString("observaciones"));
-               obs.setDni(rs.getInt("dnipaciente"));
-               obs.setFecha(rs.getString("fecha"));
-               listob.add(obs);
-           }
+            ps.setString(1, obs.getObs());
+            ps.setInt(2, obs.getDni());
+            ps.setString(3, obs.getFecha());
+            ps.execute();
+            return true;
         }catch(SQLException e){
-            System.out.println(e.toString());
+          JOptionPane.showMessageDialog(null, "falló la creación del paciente "+e.toString());
+          return false;
+        }finally{
+            try{
+                con.close();
+            }catch(SQLException e){
+                System.out.println(e.toString());
+            }
         }
-        return listob;
     }
+    
+    public List<Observacion> ListOBS(int dni) {
+        Observacion ob = new Observacion();
+    List<Observacion> listob = new ArrayList<>();
+    String sql = "SELECT * FROM observaciones WHERE dnipaciente = ?"; 
+    try {
+        con = cn.getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, ob.getDni());
+        rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Observacion obs = new Observacion();
+            obs.setObs(rs.getString("observaciones"));
+            obs.setDni(rs.getInt("dnipaciente"));
+            obs.setFecha(rs.getString("fecha"));
+            listob.add(obs);
+        }
+    } catch (SQLException e) {
+        System.out.println(e.toString());
+    }
+    return listob;
+}
+    
     
 }

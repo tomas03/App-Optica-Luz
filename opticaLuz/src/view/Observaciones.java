@@ -49,6 +49,11 @@ public class Observaciones extends javax.swing.JFrame {
 
         CrearOBS.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         CrearOBS.setText("CREAR OBSERVACIÓN");
+        CrearOBS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CrearOBSActionPerformed(evt);
+            }
+        });
 
         BuscarOBS.setText("Buscar");
         BuscarOBS.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +138,11 @@ public class Observaciones extends javax.swing.JFrame {
     private void BuscarOBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarOBSActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_BuscarOBSActionPerformed
+
+    private void CrearOBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearOBSActionPerformed
+        Crearobs crobs = new Crearobs();
+        crobs.setVisible(true);
+    }//GEN-LAST:event_CrearOBSActionPerformed
 
     /**
      * @param args the command line arguments

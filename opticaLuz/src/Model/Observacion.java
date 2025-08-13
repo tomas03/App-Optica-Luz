@@ -1,22 +1,18 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
 
 /**
  *
  * @author TOMAS
  */
-public class Observ {
+public class Observacion {
     private int dni;
     private String obs;
     private String fecha;
 
-    public Observ() {
+    public Observacion() {
     }
 
-    public Observ(int dni, String obs, String fecha) {
+    public Observacion(int dni, String obs, String fecha) {
         this.dni = dni;
         this.obs = obs;
         this.fecha = fecha;
@@ -44,8 +40,5 @@ public class Observ {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
-    }
-
-    
-    
+    }  
 }

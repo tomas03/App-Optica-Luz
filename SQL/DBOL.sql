@@ -7,8 +7,17 @@ nrotelefono varchar(20),
 direccion varchar(50));
 
 create table observaciones(
-observaciones varchar(250),
 dnipaciente int(10),
-fecha date,
+observaciones varchar(250),
+fecha varchar(20),
 foreign key (dnipaciente) references clientes(dni)
 );
+SELECT
+    o.dnipaciente,
+    c.nombrecompleto, 
+    o.observaciones,
+    o.fecha
+FROM
+    observaciones o
+JOIN
+    clientes c ON o.dnipaciente = c.dni;
