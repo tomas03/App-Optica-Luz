@@ -4,19 +4,49 @@
  */
 package view;
 
+import Model.Cliente;
+import Model.DAO.ObservDAO;
+import Model.Observacion;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author TOMAS
  */
 public class Observaciones extends javax.swing.JFrame {
 
+    ObservDAO obsdao = new ObservDAO();
+    Observacion obs = new Observacion();
+    DefaultTableModel modelo;
+    
+    
     /**
      * Creates new form Observaciones
      */
     public Observaciones() {
         initComponents();
+        listclient();
     }
 
+    public void listclient(){
+        
+        List<Observacion> Listobs = obsdao.ListOBS();
+        modelo = (DefaultTableModel) Tablaobs.getModel();
+        Object[] obj = new Object[9];
+        for(int i=0;i<Listobs.size();i++){
+            obj[0]=Listobs.get(i).getDni();
+            obj[1]=Listobs.get(i).getFecha();
+            obj[2]=Listobs.get(i).getLejos();
+            obj[3]=Listobs.get(i).getLejosLente();
+            obj[4]=Listobs.get(i).getLejosMarco();
+            obj[5]=Listobs.get(i).getCerca();
+            obj[6]=Listobs.get(i).getCercaLente();
+            obj[7]=Listobs.get(i).getCercaMarco();
+            modelo.addRow(obj);
+        }
+        Tablaobs.setModel(modelo);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +63,7 @@ public class Observaciones extends javax.swing.JFrame {
         CrearOBS = new javax.swing.JButton();
         BuscarOBS = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Tablaobs = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -62,20 +92,24 @@ public class Observaciones extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Tablaobs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Fecha", "Observacion"
+                "DNI", "Fecha", "Lejos", "Lente Lejos", "Marco Lejos", "Cerca", "Lente Cerca", "Marco Cerca"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(500);
+        jScrollPane2.setViewportView(Tablaobs);
+        if (Tablaobs.getColumnModel().getColumnCount() > 0) {
+            Tablaobs.getColumnModel().getColumn(0).setPreferredWidth(15);
+            Tablaobs.getColumnModel().getColumn(1).setPreferredWidth(15);
+            Tablaobs.getColumnModel().getColumn(2).setPreferredWidth(40);
+            Tablaobs.getColumnModel().getColumn(3).setPreferredWidth(40);
+            Tablaobs.getColumnModel().getColumn(4).setPreferredWidth(40);
+            Tablaobs.getColumnModel().getColumn(5).setPreferredWidth(40);
+            Tablaobs.getColumnModel().getColumn(6).setPreferredWidth(40);
+            Tablaobs.getColumnModel().getColumn(7).setPreferredWidth(40);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -83,32 +117,34 @@ public class Observaciones extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addComponent(BuscarOBS)
-                .addGap(240, 240, 240))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(264, 264, 264)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(210, 210, 210)
-                        .addComponent(CrearOBS)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(323, 323, 323)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(21, 21, 21)))
+                                .addGap(42, 42, 42)
+                                .addComponent(BuscarOBS))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(303, 303, 303)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(295, 295, 295)
+                                .addComponent(CrearOBS)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -116,7 +152,7 @@ public class Observaciones extends javax.swing.JFrame {
                     .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(CrearOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
         );
@@ -136,7 +172,7 @@ public class Observaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BuscarOBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarOBSActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_BuscarOBSActionPerformed
 
     private void CrearOBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearOBSActionPerformed
@@ -182,11 +218,11 @@ public class Observaciones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarOBS;
     private javax.swing.JButton CrearOBS;
+    private javax.swing.JTable Tablaobs;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

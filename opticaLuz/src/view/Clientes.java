@@ -99,6 +99,11 @@ public class Clientes extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton2.setText("Editar Paciente");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jButton3.setText("Observaciones");
@@ -283,6 +288,11 @@ public class Clientes extends javax.swing.JFrame {
         Observaciones obs = new Observaciones();
         obs.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Editarcliente ec = new Editarcliente();
+        ec.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

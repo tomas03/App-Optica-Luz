@@ -37,7 +37,7 @@ public class ClienteDAO {
             ps.execute();
             return true;
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "falló la creación del paciente "+e.toString());
+            JOptionPane.showMessageDialog(null, "falló la creación del cliente "+e.toString());
             return false;
         }finally{
             try{
@@ -89,19 +89,20 @@ public class ClienteDAO {
         }
     }
     
-    public boolean RegOBS (Observacion obs){
-        String sql = "INSERT INTO observaciones(observaciones,dnipaciente,fecha) values (?,?,?)";
+    public boolean EdCli(Cliente cl){
+        String sql = "UPDATE clientes SET nombrecompleto=?, nrotelefono=?, direccion=? where DNI =?";
         try{
-            con =cn.getConnection();
+            con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, obs.getObs());
-            ps.setInt(2, obs.getDni());
-            ps.setString(3, obs.getFecha());
+            ps.setString(1, cl.getNcomp());
+            ps.setString(2, cl.getTelefono());
+            ps.setString(3, cl.getDireccion());
+            ps.setInt(4, cl.getDni());
             ps.execute();
             return true;
         }catch(SQLException e){
-          JOptionPane.showMessageDialog(null, "falló la creación del paciente "+e.toString());
-          return false;
+            JOptionPane.showMessageDialog(null, "falló la edición del cliente "+e.toString());
+            return false;
         }finally{
             try{
                 con.close();
@@ -110,29 +111,4 @@ public class ClienteDAO {
             }
         }
     }
-    
-    public List<Observacion> ListOBS(int dni) {
-        Observacion ob = new Observacion();
-    List<Observacion> listob = new ArrayList<>();
-    String sql = "SELECT * FROM observaciones WHERE dnipaciente = ?"; 
-    try {
-        con = cn.getConnection();
-        ps = con.prepareStatement(sql);
-        ps.setInt(1, ob.getDni());
-        rs = ps.executeQuery();
-        
-        while (rs.next()) {
-            Observacion obs = new Observacion();
-            obs.setObs(rs.getString("observaciones"));
-            obs.setDni(rs.getInt("dnipaciente"));
-            obs.setFecha(rs.getString("fecha"));
-            listob.add(obs);
-        }
-    } catch (SQLException e) {
-        System.out.println(e.toString());
-    }
-    return listob;
-}
-    
-    
 }

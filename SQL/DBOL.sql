@@ -8,8 +8,13 @@ direccion varchar(50));
 
 create table observaciones(
 dnipaciente int(10),
-observaciones varchar(250),
 fecha varchar(20),
+lejos varchar(20),
+lejoslente varchar(40),
+lejosmarco varchar(40),
+cerca varchar(20),
+cercalente varchar(40),
+cercamarco varchar(40),
 foreign key (dnipaciente) references clientes(dni)
 );
 SELECT
