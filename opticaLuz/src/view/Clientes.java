@@ -41,7 +41,6 @@ public class Clientes extends javax.swing.JFrame {
     }
     
     public void listclient(){
-        
         List<Cliente> Listcl = clientdao.ListCli();
         modelo = (DefaultTableModel) tablacli.getModel();
         Object[] obj = new Object[4];
@@ -50,6 +49,20 @@ public class Clientes extends javax.swing.JFrame {
             obj[1]=Listcl.get(i).getNcomp();
             obj[2]=Listcl.get(i).getTelefono();
             obj[3]=Listcl.get(i).getDireccion();
+            modelo.addRow(obj);
+        }
+        tablacli.setModel(modelo);
+    }
+    
+    public void searchclient(){
+        List<Cliente> listcl = clientdao.SearchCli(Integer.parseInt(dnitxt.getText()));
+        modelo = (DefaultTableModel) tablacli.getModel();
+        Object[] obj = new Object[4];
+        for(int i=0;i<listcl.size();i++){
+            obj[0]=listcl.get(i).getDni();
+            obj[1]=listcl.get(i).getNcomp();
+            obj[2]=listcl.get(i).getTelefono();
+            obj[3]=listcl.get(i).getDireccion();
             modelo.addRow(obj);
         }
         tablacli.setModel(modelo);
@@ -84,6 +97,7 @@ public class Clientes extends javax.swing.JFrame {
         dnitxt = new javax.swing.JTextField();
         Delete = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -193,6 +207,13 @@ public class Clientes extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setText("Buscar");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -219,6 +240,8 @@ public class Clientes extends javax.swing.JFrame {
                 .addComponent(Delete)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
+                .addGap(18, 18, 18)
+                .addComponent(jButton6)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -232,7 +255,8 @@ public class Clientes extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dnitxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Delete)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jButton6))
                 .addGap(19, 19, 19)
                 .addComponent(tabcli, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -294,6 +318,11 @@ public class Clientes extends javax.swing.JFrame {
         ec.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        CleanTable();
+        searchclient();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -344,6 +373,7 @@ public class Clientes extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

@@ -7,7 +7,9 @@ package view;
 
 import Model.Cliente;
 import Model.DAO.ClienteDAO;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,12 +19,52 @@ public class Editarcliente extends javax.swing.JFrame {
 
     Cliente cl = new Cliente();
     ClienteDAO cldao = new ClienteDAO();
+    DefaultTableModel modelo;
     /**
      * Creates new form editarpaciente
      */
     public Editarcliente() {
         initComponents();
+        listclient();
     }
+    
+    public void listclient(){
+        
+        List<Cliente> Listcl = cldao.ListCli();
+        modelo = (DefaultTableModel) tablacliente.getModel();
+        Object[] obj = new Object[4];
+        for(int i=0;i<Listcl.size();i++){
+            obj[0]=Listcl.get(i).getDni();
+            obj[1]=Listcl.get(i).getNcomp();
+            obj[2]=Listcl.get(i).getTelefono();
+            obj[3]=Listcl.get(i).getDireccion();
+            modelo.addRow(obj);
+        }
+        tablacliente.setModel(modelo);
+    }
+    
+    public void searchclient(){
+        CleanTable();
+        List<Cliente> listcl = cldao.SearchCli(Integer.parseInt(dni.getText()));
+        modelo = (DefaultTableModel) tablacliente.getModel();
+        Object[] objeto = new Object[4];
+        for(int i=0;i<listcl.size();i++){
+            objeto[0]=listcl.get(i).getDni();
+            objeto[1]=listcl.get(i).getNcomp();
+            objeto[2]=listcl.get(i).getTelefono();
+            objeto[3]=listcl.get(i).getDireccion();
+            modelo.addRow(objeto);
+        }
+        tablacliente.setModel(modelo);
+    }
+    
+    public void CleanTable(){
+        for(int i =0;i<modelo.getRowCount();i++){
+            modelo.removeRow(i);
+            i = i-1;
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +87,9 @@ public class Editarcliente extends javax.swing.JFrame {
         edit = new javax.swing.JButton();
         direccion = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablacliente = new javax.swing.JTable();
+        search = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 0));
@@ -55,19 +100,15 @@ public class Editarcliente extends javax.swing.JFrame {
         jButton5.setBorder(null);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Editar Paciente");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Nombre Completo");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("DNI");
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("NRO. Telefonico");
 
         edit.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
@@ -79,8 +120,30 @@ public class Editarcliente extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Direccion");
+
+        tablacliente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "DNI", "Nombre Completo", "Telefono", "Direccion"
+            }
+        ));
+        tablacliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaclienteMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablacliente);
+
+        search.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        search.setText("Buscar");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -114,9 +177,15 @@ public class Editarcliente extends javax.swing.JFrame {
                         .addGap(70, 70, 70)
                         .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(214, 214, 214)
+                        .addGap(105, 105, 105)
+                        .addComponent(search)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(edit)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,8 +210,12 @@ public class Editarcliente extends javax.swing.JFrame {
                     .addComponent(dni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(direccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(edit)
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(edit)
+                    .addComponent(search))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,9 +226,7 @@ public class Editarcliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -173,6 +244,20 @@ public class Editarcliente extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "alguno o todos los campos están vacíos");
         }
     }//GEN-LAST:event_editActionPerformed
+
+    private void tablaclienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaclienteMouseClicked
+
+        int fila = tablacliente.rowAtPoint(evt.getPoint());
+        dni.setText(tablacliente.getValueAt(fila, 0).toString());
+        ncomp.setText(tablacliente.getValueAt(fila, 1).toString());
+        telefono.setText(tablacliente.getValueAt(fila, 2).toString());
+        direccion.setText(tablacliente.getValueAt(fila, 3).toString());
+    }//GEN-LAST:event_tablaclienteMouseClicked
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        CleanTable();        
+        searchclient();
+    }//GEN-LAST:event_searchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,7 +308,10 @@ public class Editarcliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField ncomp;
+    private javax.swing.JButton search;
+    private javax.swing.JTable tablacliente;
     private javax.swing.JTextField telefono;
     // End of variables declaration//GEN-END:variables
 }

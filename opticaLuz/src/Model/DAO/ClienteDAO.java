@@ -69,6 +69,36 @@ public class ClienteDAO {
         return Listacl;
     }
     
+    public List<Cliente> SearchCli(int dni) {
+    List<Cliente> listcl = new ArrayList<>();
+    String sql = "SELECT * FROM clientes WHERE DNI = ?";
+    try {
+        con = cn.getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, dni);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Cliente cl = new Cliente();
+            cl.setDni(rs.getInt("DNI"));
+            cl.setNcomp(rs.getString("nombrecompleto"));
+            cl.setTelefono(rs.getString("nrotelefono"));
+            cl.setDireccion(rs.getString("direccion"));
+            listcl.add(cl);
+        }
+    } catch (SQLException e) {
+        System.out.println(e.toString());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
+    return listcl;
+}
+    
     public boolean DelCLi(int dni){
         String sql = "DELETE FROM clientes WHERE dni = ?";
         try{
