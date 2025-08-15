@@ -8,6 +8,7 @@ import Model.Cliente;
 import Model.DAO.ObservDAO;
 import Model.Observacion;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -47,6 +48,32 @@ public class Observaciones extends javax.swing.JFrame {
         }
         Tablaobs.setModel(modelo);
     }
+    
+    public void searchclient(){
+        List<Observacion> listcl = obsdao.SearchCli(Integer.parseInt(dniobs.getText()));
+        modelo = (DefaultTableModel) Tablaobs.getModel();
+        Object[] obj = new Object[8];
+        for(int i=0;i<listcl.size();i++){
+            obj[0]=listcl.get(i).getDni();
+            obj[1]=listcl.get(i).getFecha();
+            obj[2]=listcl.get(i).getLejos();
+            obj[3]=listcl.get(i).getLejosLente();
+            obj[4]=listcl.get(i).getLejosMarco();
+            obj[5]=listcl.get(i).getCerca();
+            obj[6]=listcl.get(i).getCercaLente();
+            obj[7]=listcl.get(i).getCercaMarco();
+            modelo.addRow(obj);
+        }
+        Tablaobs.setModel(modelo);
+    }
+    
+    public void CleanTable(){
+        for(int i =0;i<modelo.getRowCount();i++){
+            modelo.removeRow(i);
+            i = i-1;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,11 +86,12 @@ public class Observaciones extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        dniobs = new javax.swing.JTextField();
         CrearOBS = new javax.swing.JButton();
         BuscarOBS = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tablaobs = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -100,6 +128,11 @@ public class Observaciones extends javax.swing.JFrame {
                 "DNI", "Fecha", "Lejos", "Lente Lejos", "Marco Lejos", "Cerca", "Lente Cerca", "Marco Cerca"
             }
         ));
+        Tablaobs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaobsMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(Tablaobs);
         if (Tablaobs.getColumnModel().getColumnCount() > 0) {
             Tablaobs.getColumnModel().getColumn(0).setPreferredWidth(15);
@@ -112,6 +145,13 @@ public class Observaciones extends javax.swing.JFrame {
             Tablaobs.getColumnModel().getColumn(7).setPreferredWidth(40);
         }
 
+        jButton1.setText("Eliminar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -122,20 +162,22 @@ public class Observaciones extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(323, 323, 323)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(21, 21, 21)))
-                                .addGap(42, 42, 42)
-                                .addComponent(BuscarOBS))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(303, 303, 303)
                                 .addComponent(jLabel1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(295, 295, 295)
-                                .addComponent(CrearOBS)))
+                                .addComponent(CrearOBS))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(323, 323, 323)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(dniobs, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(21, 21, 21)))
+                                .addGap(42, 42, 42)
+                                .addComponent(BuscarOBS)
+                                .addGap(36, 36, 36)
+                                .addComponent(jButton1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -148,8 +190,9 @@ public class Observaciones extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dniobs, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -172,13 +215,32 @@ public class Observaciones extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BuscarOBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarOBSActionPerformed
-        
+
+        CleanTable();
+        searchclient(); 
     }//GEN-LAST:event_BuscarOBSActionPerformed
 
     private void CrearOBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CrearOBSActionPerformed
         Crearobs crobs = new Crearobs();
         crobs.setVisible(true);
     }//GEN-LAST:event_CrearOBSActionPerformed
+
+    private void TablaobsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaobsMouseClicked
+        int fila = Tablaobs.rowAtPoint(evt.getPoint());
+        dniobs.setText(Tablaobs.getValueAt(fila, 0).toString());
+    }//GEN-LAST:event_TablaobsMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if(!"".equals(dniobs.getText())){
+           int pregunta = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar el cliente?");
+            if(pregunta == 0){
+                int dni = Integer.parseInt(dniobs.getText());
+                obsdao.DelOBS(dni);
+                CleanTable();
+                listclient();
+            } 
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,10 +281,11 @@ public class Observaciones extends javax.swing.JFrame {
     private javax.swing.JButton BuscarOBS;
     private javax.swing.JButton CrearOBS;
     private javax.swing.JTable Tablaobs;
+    private javax.swing.JTextField dniobs;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

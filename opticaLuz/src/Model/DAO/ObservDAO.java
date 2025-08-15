@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
  * @author TOMAS
  */
 public class ObservDAO {
+    
     Conexion cn = new Conexion();
     Connection con;
     PreparedStatement ps;
@@ -77,6 +78,50 @@ public class ObservDAO {
     return listob;
 }
     
+    public boolean DelOBS(int dni){
+        String sql = "DELETE FROM observaciones WHERE dnipaciente = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,dni);
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.out.println(e.toString());
+            return false;
+        }finally{
+            try{
+                con.close();
+            }catch(SQLException e){
+                System.out.println(e.toString());                
+            }
+
+        }
+    }
     
+    public List<Observacion> SearchCli(int dni) {
+    List<Observacion> listobs = new ArrayList<>();
+    String sql = "SELECT * FROM observaciones WHERE dnipaciente = ?";
+    try {
+        con = cn.getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, dni);
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            Observacion ob = new Observacion();
+            ob.setDni(rs.getInt("dnipaciente"));
+            ob.setFecha(rs.getString("fecha"));
+            ob.setLejos(rs.getString("lejos"));
+            ob.setLejosLente(rs.getString("lejoslente"));
+            ob.setLejosMarco(rs.getString("lejosmarco"));
+            ob.setCerca(rs.getString("cerca"));
+            ob.setCercaLente(rs.getString("cercalente"));
+            ob.setCercaMarco(rs.getString("cercamarco"));
+            listobs.add(ob);
+        }
+    } catch (SQLException e) {
+        System.out.println(e.toString());
+    } 
+    return listobs;
+}
     
 }

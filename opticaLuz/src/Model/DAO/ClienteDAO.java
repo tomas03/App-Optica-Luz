@@ -114,6 +114,8 @@ public class ClienteDAO {
                 con.close();
             }catch(SQLException e){
                 System.out.println(e.toString());
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar porque el cliente tiene observaciones"+e.toString());
+                
             }
 
         }
