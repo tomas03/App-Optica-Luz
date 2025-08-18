@@ -98,7 +98,7 @@ public class ObservDAO {
         }
     }
     
-    public List<Observacion> SearchCli(int dni) {
+    public List<Observacion> SearchOBS(int dni) {
     List<Observacion> listobs = new ArrayList<>();
     String sql = "SELECT * FROM observaciones WHERE dnipaciente = ?";
     try {
@@ -123,5 +123,33 @@ public class ObservDAO {
     } 
     return listobs;
 }
+    
+    public boolean EdOBS(Observacion ob){
+        String sql = "UPDATE observaciones SET dnipaciente=?, lejos=?, lejoslente=?, lejosmarco=?, cerca=?, cercalente=?, cercamarco=? where dnipaciente =?";
+        try{
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, ob.getDni());
+            ps.setString(2, ob.getLejos());
+            ps.setString(3, ob.getLejosLente());
+            ps.setString(4, ob.getLejosMarco());
+            ps.setString(5, ob.getCerca());
+            ps.setString(6, ob.getCercaLente());
+            ps.setString(7, ob.getCercaMarco());
+            ps.setInt(8, ob.getDni());
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "falló la edición del cliente "+e.toString());
+            System.out.println(e.toString());
+            return false;
+        }finally{
+            try{
+                con.close();
+            }catch(SQLException e){
+                System.out.println(e.toString());
+            }
+        }
+    }
     
 }
