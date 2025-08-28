@@ -78,11 +78,12 @@ public class ObservDAO {
     return listob;
 }
     
-    public boolean DelOBS(int dni){
-        String sql = "DELETE FROM observaciones WHERE dnipaciente = ?";
+    public boolean DelOBS(int dni,String fecha){
+        String sql = "DELETE from observaciones where dnipaciente = ? and fecha = ?";
         try{
             ps = con.prepareStatement(sql);
-            ps.setInt(1,dni);
+            ps.setInt(1, dni);
+            ps.setString(2, fecha);
             ps.execute();
             return true;
         }catch(SQLException e){

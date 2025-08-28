@@ -26,3 +26,4 @@ FROM
     observaciones o
 JOIN
     clientes c ON o.dnipaciente = c.dni;
+select * from observaciones where dnipaciente = '44987089' and fecha = '26/08/2025' and lejos = '1OD, 3 OI' and lejoslente = 'njkdASN' and lejosmarco = 'jkdfnjkfnaskj' and cerca = '0OD, 0 OI' and cercalente = 'S/L' and cercamarco = 'S/M';

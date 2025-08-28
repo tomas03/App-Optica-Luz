@@ -8,6 +8,10 @@ import Model.DAO.ObservDAO;
 import Model.Observacion;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -49,8 +53,6 @@ public class Crearobs extends javax.swing.JFrame {
         OIC = new javax.swing.JTextField();
         OIL = new javax.swing.JTextField();
         ODL = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        Fecha = new javax.swing.JTextField();
         Create = new javax.swing.JButton();
         dni = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -92,10 +94,6 @@ public class Crearobs extends javax.swing.JFrame {
         jLabel7.setText("OI");
 
         ODC.setMaximumSize(new java.awt.Dimension(64, 22));
-
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(240, 240, 240));
-        jLabel8.setText("Fecha");
 
         Create.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Añadir OBS.png"))); // NOI18N
         Create.addActionListener(new java.awt.event.ActionListener() {
@@ -156,12 +154,10 @@ public class Crearobs extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addGap(77, 77, 77)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
                             .addComponent(jLabel2)
                             .addComponent(jLabel10)
-                            .addComponent(Create, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(79, 79, 79)
+                            .addComponent(Create, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(81, 81, 81)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(OIC, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7)
@@ -226,13 +222,9 @@ public class Crearobs extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(LC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(MC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(34, 34, 34)
                 .addComponent(Create)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(227, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -250,11 +242,26 @@ public class Crearobs extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateActionPerformed
-        if(!"".equals(ODC.getText())||!"".equals(dni.getText())||!"".equals(OIC.getText())||!"".equals(ODL.getText())||!"".equals(OIL.getText())||!"".equals(Fecha.getText())||!"".equals(LL.getText())||!"".equals(ML.getText())||!"".equals(LC.getText())||!"".equals(MC.getText())){
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String fechaTexto = now.format(formatter);
+        if(!"".equals(ODC.getText())||!"".equals(ODL.getText())){
+            if(ODC.getText().equals("")||OIC.getText().equals("")){
+                ODC.setText("0");
+                OIC.setText("0");
+                LC.setText("S/L");
+                MC.setText("S/M");
+            }else if(ODL.getText().equals("")||OIL.getText().equals("")){
+                ODL.setText("0");
+                OIL.setText("0");
+                LL.setText("S/L");
+                ML.setText("S/M");
+            }
             String lejos = ODL.getText()+"OD, "+OIL.getText()+" OI";
             String cerca = ODC.getText()+"OD, "+OIC.getText()+" OI";
             ob.setDni(Integer.parseInt(dni.getText()));
-            ob.setFecha(Fecha.getText());
+            ob.setFecha(fechaTexto);
             ob.setLejos(lejos);
             ob.setLejosLente(LL.getText());
             ob.setLejosMarco(ML.getText());
@@ -263,6 +270,7 @@ public class Crearobs extends javax.swing.JFrame {
             ob.setCercaMarco(MC.getText());
             obdao.RegOBS(ob);
             JOptionPane.showMessageDialog(null, "Observacion Registrada");
+            dispose();
         }else{
             JOptionPane.showMessageDialog(null, "alguno o todos los campos están vacíos");
         }
@@ -308,7 +316,6 @@ public class Crearobs extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Create;
-    private javax.swing.JTextField Fecha;
     private javax.swing.JTextField LC;
     private javax.swing.JTextField LL;
     private javax.swing.JTextField MC;
@@ -328,7 +335,6 @@ public class Crearobs extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

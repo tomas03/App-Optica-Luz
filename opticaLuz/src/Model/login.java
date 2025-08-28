@@ -10,24 +10,32 @@ package Model;
  */
 public class login {
     private String usuario = "cristian";
-    private String contraseña = "opticaluz2025";
+    private String usuario1 = "nahuel";
+    private String contraseña = "cris1979";
 
     public login() {
     }
     
-    public login(String usuario, String contraseña){
+    public login(String usuario, String contraseña, String usuario1){
         this.usuario = usuario;
+        this.usuario1 = usuario1;
         this.contraseña = contraseña;
     }
 
     public String getUsuario() {
         return usuario;
     }
+    public String getUsuario1(){
+        return usuario1;
+    }
 
     public String getContraseña() {
         return contraseña;
     }
 
+    public void setUsuario1(String usuario1){
+        this.usuario1 = usuario;
+    }
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }

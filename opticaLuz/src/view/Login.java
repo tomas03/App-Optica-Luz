@@ -32,19 +32,19 @@ public class Login extends javax.swing.JFrame {
         String User = user.getText();
         String Pass = pass.getText();
 
-        if (!lg.getUsuario().equals(User)) {
-            Error.setText("Usuario Incorrecto");
-            user.setText("");
-            pass.setText("");
-        }
-        else if (!lg.getContraseña().equals(Pass)) {
-            Error.setText("Contraseña Incorrecta");
-            pass.setText("");
-        }else{
-
-                Clientes p = new Clientes();
+        if (lg.getUsuario().equals(User)&&lg.getContraseña().equals(Pass)){
+           Clientes p = new Clientes();
+                p.setVisible(true);
+                dispose(); 
+        }else if(lg.getUsuario1().equals(User)&& lg.getContraseña().equals(Pass)){
+            Clientes p = new Clientes();
                 p.setVisible(true);
                 dispose();
+        }
+        else{
+              Error.setText("Usuario o Contraseña Invalidos");
+              user.setText("");
+              pass.setText("");
             }
         
     }
@@ -95,24 +95,20 @@ public class Login extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(user)
+                    .addComponent(pass)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(user)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(0, 140, Short.MAX_VALUE))
-                            .addComponent(pass)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(110, 110, 110)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,11 +126,11 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 280, 270));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, 280, 270));
 
         Error.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         Error.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(Error, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 10, 10));
+        getContentPane().add(Error, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 370, 320, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

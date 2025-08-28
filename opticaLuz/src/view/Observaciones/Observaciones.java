@@ -5,6 +5,7 @@
 package view.Observaciones;
 
 import Model.Cliente;
+import Model.Conexion;
 import Model.DAO.ObservDAO;
 import Model.Observacion;
 import java.awt.Graphics;
@@ -14,6 +15,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.HeadlessException;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -98,6 +112,10 @@ public class Observaciones extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         Tablaobs = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        DescargarPDF = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        FECHA = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(871, 656));
@@ -106,6 +124,12 @@ public class Observaciones extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(240, 240, 240));
         jLabel2.setText("DNI");
+
+        dniobs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dniobsActionPerformed(evt);
+            }
+        });
 
         CrearOBS.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         CrearOBS.setText("CREAR OBSERVACIÓN");
@@ -154,6 +178,22 @@ public class Observaciones extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actualizar.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        DescargarPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Descargaricon.png"))); // NOI18N
+        DescargarPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DescargarPDFActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("fecha");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -163,40 +203,61 @@ public class Observaciones extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 861, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)
+                                .addGap(113, 113, 113)
+                                .addComponent(jLabel5)
+                                .addGap(51, 51, 51))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(295, 295, 295)
-                                .addComponent(CrearOBS))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(303, 303, 303)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dniobs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(49, 49, 49)
-                                        .addComponent(jLabel2)))
-                                .addGap(32, 32, 32)
-                                .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 300, Short.MAX_VALUE)))
+                                .addGap(171, 171, 171)
+                                .addComponent(dniobs, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                                .addComponent(FECHA, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)))
+                        .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(DescargarPDF, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 220, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(310, 310, 310)
+                .addComponent(CrearOBS)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(79, 79, 79)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(95, 95, 95)
+                        .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dniobs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(86, 86, 86)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(DescargarPDF)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(BuscarOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel5))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(dniobs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(FECHA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(1, 1, 1)))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(CrearOBS, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -227,6 +288,7 @@ public class Observaciones extends javax.swing.JFrame {
     private void TablaobsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaobsMouseClicked
         int fila = Tablaobs.rowAtPoint(evt.getPoint());
         dniobs.setText(Tablaobs.getValueAt(fila, 0).toString());
+        FECHA.setText(Tablaobs.getValueAt(fila, 1).toString());
     }//GEN-LAST:event_TablaobsMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -234,12 +296,71 @@ public class Observaciones extends javax.swing.JFrame {
            int pregunta = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar el cliente?");
             if(pregunta == 0){
                 int dni = Integer.parseInt(dniobs.getText());
-                obsdao.DelOBS(dni);
+                String fecha = FECHA.getText();
+                
+                obsdao.DelOBS(dni,fecha);
+                
                 CleanTable();
                 listclient();
             } 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CleanTable();
+        listclient();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void DescargarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescargarPDFActionPerformed
+        Document doc = new Document(PageSize.A4.rotate());
+        Conexion cn = new Conexion();
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            
+            PdfWriter.getInstance(doc, new FileOutputStream("C:/Users/TOMAS/OneDrive/Escritorio/Doc_Gen/Observacion"+dniobs.getText()+".pdf"));
+            doc.open();
+            PdfPTable table = new PdfPTable(8);
+            table.addCell("DNI");
+            table.addCell("Fecha");
+            table.addCell("Lejos");
+            table.addCell("Lente Lejos");
+            table.addCell("Marco Lejos");
+            table.addCell("Cerca");
+            table.addCell("Lente Cerca");
+            table.addCell("Marco Cerca");
+            table.setWidthPercentage(100);
+            try {
+                con = cn.getConnection();
+                ps = con.prepareStatement("SELECT * FROM observaciones WHERE dnipaciente = ?");
+                ps.setInt(1,Integer.parseInt(dniobs.getText()));
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    do {                        
+                        table.addCell(rs.getString(1));
+                        table.addCell(rs.getString(2));
+                        table.addCell(rs.getString(3));
+                        table.addCell(rs.getString(4));
+                        table.addCell(rs.getString(5));
+                        table.addCell(rs.getString(6));
+                        table.addCell(rs.getString(7));
+                        table.addCell(rs.getString(8));
+                    } while (rs.next());
+                    doc.add(table);
+                }
+            } catch (DocumentException | NumberFormatException | SQLException e) {
+            }
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Documento Creado");
+        }catch(DocumentException | HeadlessException | FileNotFoundException e){
+            
+        }
+    }//GEN-LAST:event_DescargarPDFActionPerformed
+
+    private void dniobsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dniobsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dniobsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -279,10 +400,14 @@ public class Observaciones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarOBS;
     private javax.swing.JButton CrearOBS;
+    private javax.swing.JButton DescargarPDF;
+    private javax.swing.JTextField FECHA;
     private javax.swing.JTable Tablaobs;
     private javax.swing.JTextField dniobs;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
